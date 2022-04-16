@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const  { nanoid } = require('nanoid');
 
 //Team Model
 const Team = require('../models/Team');
@@ -23,11 +24,9 @@ const errorFormatter = e => {
     return errors;
 }
 
-//Register Handle
+//Create Team
 router.post('/create', async (req, res) => {
     const { teamName, memberName, password, email, rollNo, phone, branch, year } = req.body;
-    // console.log(teamName, password);
-    // const name = memberName
     const leader = {
         memberName,
         rollNo,
@@ -42,6 +41,7 @@ router.post('/create', async (req, res) => {
         const newTeam = await Team.create({
             teamName,
             password,
+            code: nanoid(12),
             leader
         });
 
@@ -50,19 +50,15 @@ router.post('/create', async (req, res) => {
         bcrypt.hash(newTeam.password, salt, async (err, hash) => {
             if(err) throw err;
             //Set password to hashed
+
             const t = await Team.findByIdAndUpdate(newTeam._id, {
                 $set:{
                     password: hash
                 }
             }, {new: true});
-            // newTeam.password = hash;
-            // console.log('hello1');
-            //Save team
-            // await newTeam.save();
-            // console.log(result);
            
         }))
-        console.log('hello');
+        // console.log('hello');
         console.log(newTeam);
         const tId = newTeam._id;
         const newMember = await Member.create(leader);
@@ -77,10 +73,6 @@ router.post('/create', async (req, res) => {
             }
         }, {new: true});
         console.log('updated: ', team);
-        // newTeam.leader.isLeader = true;
-        // newTeam.noOfMembers = 1;
-        // newTeam.memberIds.push(newMember._id);
-        // await newTeam.save();
         res.status(200).json(team);
         
         // try{
@@ -111,7 +103,52 @@ router.post('/create', async (req, res) => {
         // }
 
     }catch (err){
-        console.log('hi');
+        // console.log('hi');
+        const e = errorFormatter(err.message);
+        res.status(400).send(e);
+    }
+});
+
+// join team
+router.post('/join', async (req, res) => {
+    const { code, memberName, email, rollNo, phone, branch, year } = req.body;
+    try{
+        const team = await Team.findOne({code: code});
+        if(team){
+            if(team.noOfMembers < 4){
+                try{
+                    const newMember = await Member.create({
+                        memberName,
+                        rollNo,
+                        email,
+                        phone,
+                        branch,
+                        year,
+                        isLeader: false,
+                        teamId: team._id
+                    });
+
+                    const updatedTeam = await Team.findByIdAndUpdate(team._id, {
+                        $push:{
+                            memberIds: newMember._id
+                        },
+                        $inc:{
+                            noOfMembers: 1
+                        }
+                    }, {new: true})
+
+                    res.status(200).json(updatedTeam);
+                }catch(err){
+                    const e = errorFormatter(err.message);
+                    res.status(400).send(e);
+                }
+            }else{
+                res.status(400).send('Team is already full');
+            }
+        }else{
+            res.status(400).send('Team code is invalid');
+        }
+    }catch(err){
         const e = errorFormatter(err.message);
         res.status(400).send(e);
     }
