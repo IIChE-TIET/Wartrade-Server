@@ -34,7 +34,6 @@ const MemberSchema = new mongoose.Schema({
     },
     isLeader:{
         type: Boolean,
-        default: false
     },
     teamId:{
         type: mongoose.Schema.Types.ObjectId,

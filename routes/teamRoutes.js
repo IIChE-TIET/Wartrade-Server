@@ -50,12 +50,19 @@ router.post('/create', async (req, res) => {
         bcrypt.hash(newTeam.password, salt, async (err, hash) => {
             if(err) throw err;
             //Set password to hashed
-            newTeam.password = hash;
-
+            const t = await Team.findByIdAndUpdate(newTeam._id, {
+                $set:{
+                    password: hash
+                }
+            }, {new: true});
+            // newTeam.password = hash;
+            // console.log('hello1');
             //Save team
-            await newTeam.save();
+            // await newTeam.save();
+            // console.log(result);
+           
         }))
-        
+        console.log('hello');
         console.log(newTeam);
         const tId = newTeam._id;
         const newMember = await Member.create(leader);
@@ -63,12 +70,19 @@ router.post('/create', async (req, res) => {
         newMember.teamId = tId;
         await newMember.save();
 
-        newTeam.leader.isLeader = true;
-        newTeam.noOfMembers = 1;
-        newTeam.memberIds.push(newMember._id);
-        await newTeam.save();
-
-        res.status(200).send(newTeam, newMember);
+        const team = await Team.findByIdAndUpdate(tId, {
+            $set:{
+                noOfMembers: 1,
+                memberIds: [newMember._id]
+            }
+        }, {new: true});
+        console.log('updated: ', team);
+        // newTeam.leader.isLeader = true;
+        // newTeam.noOfMembers = 1;
+        // newTeam.memberIds.push(newMember._id);
+        // await newTeam.save();
+        res.status(200).json(team);
+        
         // try{
         //     const newMember = await Member.create({
         //         memberName,
