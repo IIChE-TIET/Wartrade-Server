@@ -154,4 +154,20 @@ router.post('/join', async (req, res) => {
     }
 });
 
+//Login Hande
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/users/login',
+        // failureFlash: true
+    })(req, res, next);
+});
+
+//Logout Handle
+router.get('/logout', (req, res) => {
+    req.logout();
+    // req.flash('success_msg', 'You are logged out successfully!');
+    res.redirect('/teams/login');
+})
+
 module.exports = router;

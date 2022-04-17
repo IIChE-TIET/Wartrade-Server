@@ -2,7 +2,6 @@ const express  = require('express');
 const session  = require('express-session');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const flash    = require('connect-flash');
 
 require("dotenv").config();
 
@@ -35,17 +34,6 @@ app.use(session({
 //Passport.js
 app.use(passport.initialize());
 app.use(passport.session());
-
-//connect flash
-app.use(flash());
-
-//Global Vars
-app.use((req, res, next) => {
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error_msg = req.flash('error_msg');
-    res.locals.error= req.flash('error');
-    next();
-});
 
 //Routes
 app.use('/', require('./routes/indexRoutes'));
