@@ -1,0 +1,37 @@
+GET http://localhost:5000
+
+###
+
+POST http://localhost:5000/create
+content-type: application/json
+
+{
+  "teamName": "Marauders",
+  "password": "12345678",
+  "leader": {
+    "name": "Aryan",
+    "rollNo": "101915124",
+    "phone": "8146740057",
+    "year": "3rd",
+    "branch": "ENC",
+    "email": "aryan2563737@gmail.com"
+  }
+}
+
+
+###
+
+POST http://localhost:5000/join
+content-type: application/json
+
+{
+  "code":"RV7vjcaOH",
+  "member": {
+    "name": "random",
+    "rollNo": "10000003",
+    "phone": "1234567893",
+    "year": "3rd",
+    "branch": "ENC",
+    "email": "test4@test.com"
+  }
+}
