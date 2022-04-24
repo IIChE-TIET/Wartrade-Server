@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "cd build  && node src/app.js",
+    "start": "cd build  && node app.js",
     "dev": "tsnd --respawn src/app.ts",
     "build": "tsc -p ."
   },
