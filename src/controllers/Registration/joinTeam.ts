@@ -31,18 +31,14 @@ export const memberAlreadyExists: controller = async (req, res, next) => {
         {
           "leader.email": member.email,
         },
-        {
-          "leader.rollNo": member.rollNo,
-        },
+
         {
           "leader.phone": member.phone,
         },
         {
           "members.email": member.email,
         },
-        {
-          "members.rollNo": member.rollNo,
-        },
+
         {
           "members.phone": member.phone,
         },

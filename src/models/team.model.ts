@@ -5,7 +5,7 @@ import { MemberSchema } from "./member.model"
 
 export type member = {
   name: string
-  rollNo: string
+
   phone: string
   year: string
   branch: string

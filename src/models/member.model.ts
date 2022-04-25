@@ -7,11 +7,7 @@ export const MemberSchema = new mongoose.Schema<member>({
     type: String,
     required: [true, "Please enter your name"],
   },
-  rollNo: {
-    type: String,
-    required: [true, "Please enter your rollNo"],
-    unique: [true, "Roll Number already in use. Try Logging In isntead"],
-  },
+
   email: {
     type: String,
     required: [true, "Please enter your email id"],
