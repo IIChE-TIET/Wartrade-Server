@@ -1,3 +1,4 @@
+import cors from "cors"
 import express from "express"
 import helmet from "helmet"
 import mongoose from "mongoose"
@@ -13,6 +14,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(morgan("tiny"))
 app.use(helmet())
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://wartrade.netlify.app"
+        : "http://localhist:5000",
+    credentials: true,
+  })
+)
 
 const MongoURI = process.env.MONGODB_URI
 
