@@ -18,6 +18,8 @@ const createTeam: controller = async (req, res) => {
 
     return res.status(201).send({ message: "Team Created" })
   } catch (err) {
+    console.log(err)
+
     const e = errorFormatter(err.message)
     console.log({ createTeam: e })
     return res.status(500).send(e)

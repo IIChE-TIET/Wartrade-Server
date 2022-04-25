@@ -19,7 +19,7 @@ app.use(
     origin:
       process.env.NODE_ENV === "production"
         ? "https://wartrade.netlify.app"
-        : "http://localhist:5000",
+        : "http://localhost:3000",
     credentials: true,
   })
 )

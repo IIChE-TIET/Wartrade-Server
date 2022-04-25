@@ -1,11 +1,9 @@
 import bcrypt from "bcrypt"
 import mongoose, { Document } from "mongoose"
-import uniqueValidator from "mongoose-unique-validator"
 import { MemberSchema } from "./member.model"
 
 export type member = {
   name: string
-
   phone: string
   year: string
   branch: string
@@ -24,7 +22,7 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
   {
     teamName: {
       type: String,
-      unique: [true, "Team Name already in use. Use a Different Team Name"],
+
       required: [true, "Team Name is required"],
     },
     password: {
@@ -49,10 +47,6 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
 TeamSchema.pre<teamI>("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10)
   next()
-})
-
-TeamSchema.plugin(uniqueValidator, {
-  message: "{PATH} already in use.",
 })
 
 const Team = mongoose.model<teamI>("Team", TeamSchema)
