@@ -13,8 +13,8 @@ export const MemberSchema = new mongoose.Schema<member>({
   },
   phone: {
     type: String,
-    maxlength: [10, "Phone number should of 10 digits"],
-    minlength: [10, "Phone number should of 10 digits"],
+    maxlength: [10, " Incorrect phone number"],
+    minlength: [10, " Incorrect phone number"],
     required: [true, "Please enter your phone number"],
   },
   branch: {

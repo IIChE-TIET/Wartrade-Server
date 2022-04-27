@@ -27,7 +27,7 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
     },
     password: {
       type: String,
-      minlength: [6, "Password should be of minimum 6 characters"],
+      minlength: [8, " Password should be of minimum 8 characters"],
       required: [true, "Please enter the Password"],
     },
     code: {

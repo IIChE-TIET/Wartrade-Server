@@ -12,7 +12,7 @@ export const teamExistsandHasSpace: controller = async (req, res, next) => {
     else if (exists.members.length >= parseInt(process.env.TEAM_STRENGTH) - 1)
       return res
         .status(406)
-        .send({ message: "Team Already Full ╮ (. ❛ ᴗ ❛.) ╭" })
+        .send({ message: "Team Already Full  ╮ (. ❛ ᴗ ❛.) ╭" })
     else req.team = exists
     next()
   } catch (err) {
@@ -45,7 +45,9 @@ export const memberAlreadyExists: controller = async (req, res, next) => {
       ],
     }).lean()
     if (alreadyMmeber)
-      return res.status(400).send({ message: "Already a member of a Guild" })
+      return res
+        .status(400)
+        .send({ message: "Already a member of a Guild.\nTry logging in." })
     else next()
   } catch (err) {
     const e = errorFormatter(err.message)

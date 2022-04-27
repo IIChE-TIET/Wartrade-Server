@@ -18,7 +18,7 @@ export const errorFormatter = (e: any) => {
     const [key, value]: [string, any] = error
       .split(":")
       .map((err: any) => err.trim())
-    errors.push(key + " " + value)
+    errors.push(value)
   })
 
   return errors

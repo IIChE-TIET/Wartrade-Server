@@ -7,13 +7,13 @@ content-type: application/json
 
 {
   "teamName": "Marasuders",
-  "password": "123456s78",
+  "password": "12345678",
   "leader": {
     "name": "Aryan",
-    "phone": "8116740057",
+    "phone": "8246740057",
     "year": "3rd",
     "branch": "ENC",
-    "email": "aryan25s63737@gmail.com"
+    "email": "arysan2563737@gmail.com"
   }
 }
 

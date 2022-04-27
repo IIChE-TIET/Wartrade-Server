@@ -16,7 +16,7 @@ const createTeam: controller = async (req, res) => {
       code: nanoid(9),
     })
 
-    return res.status(201).send({ message: "Team Created" })
+    return res.status(201).send({ message: `Team "${teamName}" Created` })
   } catch (err) {
     console.log(err)
 
