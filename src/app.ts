@@ -1,8 +1,11 @@
+import cookieParser from "cookie-parser"
 import cors from "cors"
 import express from "express"
 import helmet from "helmet"
 import mongoose from "mongoose"
 import morgan from "morgan"
+import authenticate from "./Middleware/authenticate"
+import privateRouter from "./routes/private.route"
 import publicRouter from "./routes/public.route"
 
 process.env.NODE_ENV !== "production" && require("dotenv").config()
@@ -14,6 +17,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(morgan("tiny"))
 app.use(helmet())
+app.use(cookieParser())
 app.use(
   cors({
     origin:
@@ -36,5 +40,6 @@ connection.once("open", () =>
 
 //routes
 app.use("/", publicRouter)
+app.use("/private", authenticate, privateRouter)
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`))

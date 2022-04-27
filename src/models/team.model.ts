@@ -15,6 +15,7 @@ export type teamI = Document & {
   password: string
   code: string
   leader: member
+  allowed: boolean
   members?: member[]
 }
 
@@ -33,6 +34,10 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
     code: {
       type: String,
       required: true,
+    },
+    allowed: {
+      type: Boolean,
+      default: true,
     },
     leader: {
       type: MemberSchema,

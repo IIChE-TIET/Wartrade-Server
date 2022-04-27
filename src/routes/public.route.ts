@@ -1,5 +1,6 @@
 import { Router } from "express"
 import getTeams from "../controllers/getTeams"
+import login from "../controllers/Login"
 import createTeam from "../controllers/Registration/createTeam"
 import joinTeam, {
   memberAlreadyExists,
@@ -9,6 +10,8 @@ import joinTeam, {
 const publicRouter = Router()
 
 publicRouter.get("/", getTeams)
+
+publicRouter.post("/", login)
 
 publicRouter.post("/create", createTeam)
 
