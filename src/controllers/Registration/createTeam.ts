@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid"
+import createTeamMail from "../../Mail/createTeam.mail"
 import Team, { teamI } from "../../models/team.model"
-import { controller, errorFormatter } from "../common"
+import { controller, errorFormatter, sanitize } from "../common"
 
 const createTeam: controller = async (req, res) => {
   const { teamName, leader, password } = req.body as teamI
@@ -8,13 +9,15 @@ const createTeam: controller = async (req, res) => {
   try {
     const exists = await Team.findOne({ teamName }).lean()
     if (exists) return res.status(500).send("Team Name Already in use")
-
+    const code = nanoid(9)
     await Team.create({
-      teamName,
-      password,
-      leader,
-      code: nanoid(9),
+      teamName: sanitize(teamName),
+      password: sanitize(password),
+      leader: sanitize(leader),
+      code: sanitize(code),
     })
+
+    createTeamMail(leader.email, teamName, code)
 
     return res.status(201).send({ message: `Team "${teamName}" Created` })
   } catch (err) {

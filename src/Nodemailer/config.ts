@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer"
+process.env.NODE_ENV !== "production" && require("dotenv").config()
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",

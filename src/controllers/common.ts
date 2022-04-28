@@ -8,6 +8,21 @@ export type controller = (
   next: NextFunction
 ) => Promise<Response>
 
+type objectI = { [key: string]: string }
+
+type sanitize = (input: string | objectI) => string | objectI
+
+export const sanitize: sanitize = input => {
+  if (typeof input === "string") return input.trim()
+  const sanitized: {
+    [key: string]: string
+  } = {}
+  Object.entries(input).forEach(
+    ([key, value]) => (sanitized[key] = value.trim())
+  )
+  return sanitized
+}
+
 export const errorFormatter = (e: any) => {
   let errors: string[] = []
 

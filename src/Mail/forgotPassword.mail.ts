@@ -1,7 +1,7 @@
 import Mail from "nodemailer/lib/mailer"
 import transporter from "../Nodemailer/config"
 
-const mailMessage = (code: string) => `
+const mailMessage = (token: string) => `
 <body
   style="
     width: 100%;
@@ -26,16 +26,9 @@ const mailMessage = (code: string) => `
         <p style="text-align: center">
           Greetings from IIChE TIET!!
           <br /><br />
-          We are glad to inform you that you have successfully registered as a
-          team/individual for our event WARTRADE2.0.
+          Open the following link to change your password https://wartrade.netlify.app/forgot-password/${token}
           <br /><br />
-          You can add other members to your team using the following link : https://wartrade.netlify.app/join/${code}
-          <br /><br />
-          It is going to be an adventurous ride as promised by our team.
-          <br />
-          Looking forward to your participation.
-          <br /><br />
-          If you have any query you can contact the following people
+          If this request wasn't made by you, get in touch with us
           <br />
           <br />
           Parth Sood(Gen Sec) : 7986810284
@@ -79,16 +72,12 @@ const mailMessage = (code: string) => `
 </body>
 `
 
-const createTeamMail = async (
-  email: string,
-  teamName: string,
-  code: string
-) => {
+const forgotPasswordMail = async (email: string, token: string) => {
   const options: Mail.Options = {
     from: process.env.NODEMAILER_SENDER,
     to: email,
-    subject: `Guild "${teamName}" Successfully Created`,
-    html: mailMessage(code),
+    subject: "Wartrade 2.0 Reset Password",
+    html: mailMessage(token),
   }
   try {
     await transporter.sendMail(options)
@@ -97,4 +86,4 @@ const createTeamMail = async (
   }
 }
 
-export default createTeamMail
+export default forgotPasswordMail

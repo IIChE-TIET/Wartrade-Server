@@ -1,5 +1,6 @@
+import teamJoinMail from "../../Mail/teamJoin.mail"
 import Team, { member, teamI } from "../../models/team.model"
-import { controller, errorFormatter } from "../common"
+import { controller, errorFormatter, sanitize } from "../common"
 
 type body = { member: member; code: teamI["code"] }
 
@@ -62,16 +63,19 @@ const joinTeam: controller = async (req, res) => {
 
   try {
     const { team } = req
-    await team.update({
+    await team.updateOne({
       $push: {
-        members: member,
+        members: sanitize(member),
       },
     })
 
+    teamJoinMail(team.leader.email, member.name, member.email, team.teamName)
+
     return res.status(200).send({ message: "Added to Team" })
   } catch (err) {
+    console.log(err)
     const e = errorFormatter(err.message)
-    console.log({ createTeam: e })
+    console.log({ joinTeam: e })
     return res.status(500).send(e)
   }
 }
