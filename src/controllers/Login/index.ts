@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import Team from "../../models/team.model"
-import { controller, genPayload, sanitize } from "../common"
+import { controller, genPayload } from "../common"
 
 const login: controller = async (req, res) => {
   const errMessage = "Incorrect Team Name or Password"
@@ -14,7 +14,7 @@ const login: controller = async (req, res) => {
   if (!teamName || !password)
     return res.status(400).send({ message: errMessage })
   try {
-    const team = await Team.findOne({ teamName: sanitize(teamName) }).lean()
+    const team = await Team.findOne({ teamName: teamName.trim() }).lean()
     if (!team) return res.status(404).send({ message: errMessage })
     const sanitizedPassword = password.trim()
     if (!(await bcrypt.compare(sanitizedPassword, team.password)))

@@ -15,7 +15,7 @@ export type teamI = Document & {
   password: string
   code: string
   leader: member
-  allowed: boolean
+  allowed?: boolean
   members?: member[]
 }
 
