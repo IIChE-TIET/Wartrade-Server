@@ -1,7 +1,14 @@
 import Mail from "nodemailer/lib/mailer"
 import transporter from "../Nodemailer/config"
 
-const mailMessage = (token: string) => `
+const forgotPasswordLink = (teamName: string, token: string) =>
+  (process.env.NODE_ENV === "production"
+    ? "https://wartrade.netlify.app/forgotPassword/"
+    : "http://localhost:3000/forgotPassword/") +
+  teamName +
+  "/" +
+  token
+const mailMessage = (teamName: string, token: string) => `
 <body
   style="
     width: 100%;
@@ -26,7 +33,10 @@ const mailMessage = (token: string) => `
         <p style="text-align: center">
           Greetings from IIChE TIET!!
           <br /><br />
-          Open the following link to change your password https://wartrade.netlify.app/forgot-password/${token}
+          Open the following link to change your password ${forgotPasswordLink(
+            teamName,
+            token
+          )}
           <br /><br />
           If this request wasn't made by you, get in touch with us
           <br />
@@ -72,12 +82,16 @@ const mailMessage = (token: string) => `
 </body>
 `
 
-const forgotPasswordMail = async (email: string, token: string) => {
+const forgotPasswordMail = async (
+  email: string,
+  teamName: string,
+  token: string
+) => {
   const options: Mail.Options = {
     from: process.env.NODEMAILER_SENDER,
     to: email,
     subject: "Wartrade 2.0 Reset Password",
-    html: mailMessage(token),
+    html: mailMessage(teamName, token),
   }
   try {
     await transporter.sendMail(options)

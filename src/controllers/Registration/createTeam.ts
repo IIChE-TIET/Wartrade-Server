@@ -7,8 +7,19 @@ const createTeam: controller = async (req, res) => {
   const { teamName, leader, password } = req.body as teamI
 
   try {
-    const exists = await Team.findOne({ teamName }).lean()
-    if (exists) return res.status(500).send("Team Name Already in use")
+    const exists = await Team.findOne({
+      $or: [
+        { teamName },
+        { "leader.email": leader.email },
+        { "members.email": leader.email },
+        { "leader.phone": "leader.phone" },
+        { "members.phone": leader.phone },
+      ],
+    }).lean()
+    if (exists)
+      return res
+        .status(500)
+        .send({ message: "Team Name/Email/Phone  Already in use" })
     const code = nanoid(9)
     await Team.create({
       teamName,

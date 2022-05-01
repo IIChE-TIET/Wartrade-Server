@@ -1,23 +1,23 @@
 import { nanoid } from "nanoid"
 import forgotPasswordMail from "../../Mail/forgotPassword.mail"
-import Team from "../../models/team.model"
+import Team, { teamI } from "../../models/team.model"
 import Token from "../../models/token.model"
 import { controller, errorFormatter } from "../common"
 
 const generateToken: controller = async (req, res) => {
-  const { email } = req.body
+  const { teamName } = req.body as teamI
   try {
-    const team = await Team.findOne({ "leader.email": email }).lean()
+    const team = await Team.findOne({ teamName: teamName.trim() }).lean()
 
-    if (!team) return res.send("Team not registered")
+    if (!team) return res.status(404).send("Team not registered")
 
     const token = nanoid(21)
     await Token.create({
-      teamName: team.teamName,
+      teamName: teamName,
       token,
     })
 
-    await forgotPasswordMail(email, token)
+    await forgotPasswordMail(team.leader.email, teamName, token)
 
     return res
       .status(200)

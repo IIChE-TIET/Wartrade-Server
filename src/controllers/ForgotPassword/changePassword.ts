@@ -1,23 +1,13 @@
 import { hash } from "bcrypt"
-import jwt from "jsonwebtoken"
 import Team from "../../models/team.model"
 import { controller, errorFormatter } from "../common"
 
 const changePassword: controller = async (req, res) => {
-  const { password } = req.body
+  const { password, id } = req.body
 
   try {
-    const token = req.cookies["wartrade"]
-    if (!token) return res.clearCookie("wartrade-forgot").sendStatus(400)
-
-    const verifiedToken = jwt.verify(token, process.env.JWT_SECRET) as {
-      teamName: string
-    }
-    if (!verifiedToken)
-      return res.clearCookie("wartrade-forgot").sendStatus(400)
-
     await Team.updateOne(
-      { teamName: verifiedToken.teamName },
+      { _id: id },
       {
         $set: {
           password: await hash(password, 10),

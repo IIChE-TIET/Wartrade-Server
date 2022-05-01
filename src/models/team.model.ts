@@ -23,7 +23,6 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
   {
     teamName: {
       type: String,
-
       required: [true, "Team Name is required"],
     },
     password: {

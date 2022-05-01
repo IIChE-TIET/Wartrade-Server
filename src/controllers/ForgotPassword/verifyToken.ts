@@ -1,9 +1,10 @@
-import jwt from "jsonwebtoken"
+import Team from "../../models/team.model"
 import Token from "../../models/token.model"
 import { controller, errorFormatter } from "../common"
 
 const verifyToken: controller = async (req, res) => {
-  const { token, teamName } = req.body
+  const { token, teamName } = req.params
+  console.log({ teamName, token })
 
   try {
     const validToken = await Token.findOne({ teamName: teamName, token: token })
@@ -11,17 +12,9 @@ const verifyToken: controller = async (req, res) => {
     if (!validToken)
       return res.status(403).send({ message: "Invalid Token or expired" })
 
-    const payload = jwt.sign({ teamName }, process.env.JWT_SECRET)
+    const team = await Team.findOne({ teamName }, { _id: 1 }).lean()
 
-    return res
-      .cookie("wartrade-forgot", payload, {
-        maxAge: 1000 * 60 * 10,
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      })
-      .status(200)
-      .send({ access: true })
+    return res.status(200).send({ id: team._id })
   } catch (err) {
     console.log({ generateToken: err })
     const e = errorFormatter(err.message)

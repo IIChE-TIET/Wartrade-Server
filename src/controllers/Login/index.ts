@@ -29,7 +29,7 @@ const login: controller = async (req, res) => {
 
     return res
       .cookie("wartrade", token, {
-        maxAge: 1000 * 60 * 60 * 5,
+        maxAge: 1000 * 60 * 60 * 24,
         secure: true,
         httpOnly: true,
         sameSite: "none",
