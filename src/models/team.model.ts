@@ -48,7 +48,7 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
     },
     allowed: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     money: {
       type: Number,
