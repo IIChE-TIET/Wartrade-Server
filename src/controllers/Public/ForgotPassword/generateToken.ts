@@ -1,8 +1,8 @@
 import { nanoid } from "nanoid"
-import forgotPasswordMail from "../../Mail/forgotPassword.mail"
-import Team, { teamI } from "../../models/team.model"
-import Token from "../../models/token.model"
-import { controller, errorFormatter } from "../common"
+import forgotPasswordMail from "../../../Mail/forgotPassword.mail"
+import Team, { teamI } from "../../../models/team.model"
+import Token from "../../../models/token.model"
+import { controller, errorFormatter } from "../../common"
 
 const generateToken: controller = async (req, res) => {
   const { teamName } = req.body as teamI
@@ -17,7 +17,16 @@ const generateToken: controller = async (req, res) => {
       token,
     })
 
-    await forgotPasswordMail(team.leader.email, teamName, token)
+    const resetLink = encodeURI(
+      (process.env.NODE_ENV === "production"
+        ? "https://wartrade.netlify.app/forgotPassword/"
+        : "http://localhost:3000/forgotPassword/") +
+        teamName +
+        "/" +
+        token
+    )
+
+    await forgotPasswordMail(team.leader.email, resetLink)
 
     return res
       .status(200)

@@ -1,6 +1,6 @@
 GET http://localhost:5000
 
-###
+###Create Team
 
 POST http://localhost:5000/create
 content-type: application/json
@@ -18,7 +18,18 @@ content-type: application/json
 }
 
 
-###
+###Login
+
+POST http://localhost:5000/
+content-type: application/json
+
+{
+  "teamName": "Marauders",
+  "password":"11223344"  
+}
+
+
+###Join
 
 POST http://localhost:5000/join
 content-type: application/json
@@ -34,7 +45,7 @@ content-type: application/json
   }
 }
 
-###
+###Forgot Password
 POST http://localhost:5000/forgot-password
 content-type: application/json
 
@@ -43,8 +54,48 @@ content-type: application/json
 }
 
 
-###
-GET http://localhost:5000/mail
+###Buy Bombs
+
+POST http://localhost:5000/private/buyBombs
+content-type: application/json
+
+{
+  "bombName":"Mk-III",
+  "quantity":10
+}
 
 ###
-GET http://localhost:5000/mail1
+
+###Buy Defense Points
+
+POST http://localhost:5000/private/buyDefensePoints
+content-type: application/json
+
+{
+  "numOfPoints":100
+}
+
+###Create Alliance
+POST http://localhost:5000/private/createAlliance
+content-type: application/json
+
+{
+  "teamName1":"Marauders",
+  "teamName2":"Avengers"
+}
+
+###Attack
+POST http://localhost:5000/private/attack
+content-type: application/json
+
+{
+  "teamName":"Test team",
+  "bombsSelected":[
+    {"bombName":"Firecracker","quantity":1},
+      {"bombName":"Mk-41","quantity":1}
+  ]
+}
+
+###
+GET http://localhost:5000/update
+

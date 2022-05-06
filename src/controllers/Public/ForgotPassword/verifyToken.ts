@@ -1,14 +1,17 @@
-import Team from "../../models/team.model"
-import Token from "../../models/token.model"
-import { controller, errorFormatter } from "../common"
+import Team from "../../../models/team.model"
+import Token from "../../../models/token.model"
+import { controller, errorFormatter } from "../../common"
 
 const verifyToken: controller = async (req, res) => {
   const { token, teamName } = req.params
   console.log({ teamName, token })
 
   try {
-    const validToken = await Token.findOne({ teamName: teamName, token: token })
-    console.log(validToken)
+    const validToken = await Token.findOne({
+      teamName: teamName,
+      token: token,
+    }).lean()
+
     if (!validToken)
       return res.status(403).send({ message: "Invalid Token or expired" })
 

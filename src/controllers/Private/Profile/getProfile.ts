@@ -1,5 +1,6 @@
-import Team from "../../models/team.model"
-import { controller, genPayload } from "../common"
+import Team from "../../../models/team.model"
+import { controller, errorFormatter } from "../../common"
+import GenPayload from "../../GenPayload"
 
 const getProfile: controller = async (req, res) => {
   const id = req.teamId
@@ -8,13 +9,15 @@ const getProfile: controller = async (req, res) => {
     const team = await Team.findOne({ _id: id }).lean()
     if (!team || !team.allowed)
       return res.clearCookie("wartrade").sendStatus(400)
-    const payload = genPayload(team)
+    const payload = GenPayload(team)
     return res.status(200).send({
       team: payload,
     })
   } catch (err) {
-    console.error({ getProfile: err })
-    return res.status(500).send(err)
+    console.log({ profile: err })
+    const e = errorFormatter(err.message)
+    console.log({ profile: e })
+    return res.status(400).send(e)
   }
 }
 export default getProfile

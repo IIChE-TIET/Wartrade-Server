@@ -1,6 +1,6 @@
 import { hash } from "bcrypt"
-import Team from "../../models/team.model"
-import { controller, errorFormatter } from "../common"
+import Team from "../../../models/team.model"
+import { controller, errorFormatter } from "../../common"
 
 const changePassword: controller = async (req, res) => {
   const { password, id } = req.body

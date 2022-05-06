@@ -1,6 +1,6 @@
-import teamJoinMail from "../../Mail/teamJoin.mail"
-import Team, { member, teamI } from "../../models/team.model"
-import { controller, errorFormatter } from "../common"
+import teamJoinMail from "../../../Mail/teamJoin.mail"
+import Team, { member, teamI } from "../../../models/team.model"
+import { controller, errorFormatter } from "../../common"
 
 type body = { member: member; code: teamI["code"] }
 

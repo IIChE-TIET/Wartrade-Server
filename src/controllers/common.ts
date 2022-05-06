@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express"
-import { DocumentDefinition } from "mongoose"
 import { teamI } from "../models/team.model"
 
 export type controller = (
@@ -24,10 +23,3 @@ export const errorFormatter = (e: any) => {
 
   return errors
 }
-
-export const genPayload = (team: DocumentDefinition<teamI>) => ({
-  teamName: team.teamName,
-  leaderName: team.leader.name,
-  code: team.code,
-  members: team.members?.map(m => m.name),
-})

@@ -1,4 +1,4 @@
-import { controller } from "../common"
+import { controller } from "../../common"
 
 const logout: controller = async (req, res) => {
   return res.clearCookie("wartrade").sendStatus(200)

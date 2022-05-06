@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid"
-import createTeamMail from "../../Mail/createTeam.mail"
-import Team, { teamI } from "../../models/team.model"
-import { controller, errorFormatter } from "../common"
+import createTeamMail from "../../../Mail/createTeam.mail"
+import Team, { teamI } from "../../../models/team.model"
+import { controller, errorFormatter } from "../../common"
 
 const createTeam: controller = async (req, res) => {
   const { teamName, leader, password } = req.body as teamI

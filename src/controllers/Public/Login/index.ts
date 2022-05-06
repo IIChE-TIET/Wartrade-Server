@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import Team from "../../models/team.model"
-import { controller, genPayload } from "../common"
+import Team from "../../../models/team.model"
+import { controller, errorFormatter } from "../../common"
+import GenPayload from "../../GenPayload"
 
 const login: controller = async (req, res) => {
   const errMessage = "Incorrect Team Name or Password"
@@ -35,10 +36,12 @@ const login: controller = async (req, res) => {
         sameSite: "none",
       })
       .status(200)
-      .send({ message: successMessage, team: genPayload(team) })
+      .send({ message: successMessage, team: GenPayload(team) })
   } catch (err) {
-    console.error({ Login: err })
-    return res.status(500).send(err)
+    console.log({ login: err })
+    const e = errorFormatter(err.message)
+    console.log({ login: e })
+    return res.status(400).send(e)
   }
 }
 

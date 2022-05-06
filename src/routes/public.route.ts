@@ -1,14 +1,14 @@
 import { Router } from "express"
-import changePassword from "../controllers/ForgotPassword/changePassword"
-import generateToken from "../controllers/ForgotPassword/generateToken"
-import verifyToken from "../controllers/ForgotPassword/verifyToken"
 import getTeams from "../controllers/getTeams"
-import login from "../controllers/Login"
-import createTeam from "../controllers/Registration/createTeam"
+import changePassword from "../controllers/Public/ForgotPassword/changePassword"
+import generateToken from "../controllers/Public/ForgotPassword/generateToken"
+import verifyToken from "../controllers/Public/ForgotPassword/verifyToken"
+import login from "../controllers/Public/Login"
+import createTeam from "../controllers/Public/Registration/createTeam"
 import joinTeam, {
   memberAlreadyExists,
   teamExistsandHasSpace,
-} from "../controllers/Registration/joinTeam"
+} from "../controllers/Public/Registration/joinTeam"
 
 const publicRouter = Router()
 
@@ -25,5 +25,26 @@ publicRouter.post("/forgotPassword/generateToken", generateToken)
 publicRouter.post("/forgotPassword/verifyToken/:teamName/:token", verifyToken)
 
 publicRouter.post("/forgotPassword/change", changePassword)
+
+// publicRouter.post("/alliance", createAlliance)
+
+// publicRouter.post("/trading", trading)
+
+// publicRouter.get("/update", async (req: Request, res: Response) => {
+//   try {
+//     await Team.updateMany(
+//       {},
+//       {
+//         $set: {
+//           allowed: false,
+//         },
+//       }
+//     )
+//     return res.status(200).send({ message: "Updated" })
+//   } catch (err) {
+//     console.log(err)
+//     return res.status(500).send(err)
+//   }
+// })
 
 export default publicRouter
