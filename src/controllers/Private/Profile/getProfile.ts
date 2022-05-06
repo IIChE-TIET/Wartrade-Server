@@ -7,8 +7,7 @@ const getProfile: controller = async (req, res) => {
 
   try {
     const team = await Team.findOne({ _id: id }).lean()
-    if (!team || !team.allowed)
-      return res.clearCookie("wartrade").sendStatus(400)
+    if (!team) return res.clearCookie("wartrade").sendStatus(400)
     const payload = GenPayload(team)
     return res.status(200).send({
       team: payload,
