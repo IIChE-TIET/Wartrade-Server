@@ -10,6 +10,6 @@ adminRouter.get("/logout", adminLogout)
 
 adminRouter.post("/alliance", gameActive, createAlliance)
 
-adminRouter.post("/trade", gameActive, trading)
+adminRouter.post("/trading", gameActive, trading)
 
 export default adminRouter

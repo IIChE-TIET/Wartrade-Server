@@ -3,7 +3,7 @@ import { controller, errorFormatter, toBool } from "../../common"
 import { findBombByName } from "../BuyBombs/BombsList"
 import GenPayload from "./../../GenPayload"
 
-const COOLDOWN_TIME = 5 * 60 * 1000
+const COOLDOWN_TIME = 3 * 60 * 1000
 
 const DEFENSE_POWER = 10_000
 
@@ -96,12 +96,14 @@ const Attack: controller = async (req, res) => {
           0.5
         ) * defendingTeam.infra
 
-      const lostDefense =
+      let lostDefense =
         -1 *
         Math.min(
           (attackStrength - defenseStrength - BASE_DEFENSE) / DEFENSE_POWER,
           200
         )
+      if (totalDefensePoints + lostDefense < 0)
+        lostDefense = defendingTeam.defensePoints
 
       await attackingTeam.updateOne({
         $inc: {
