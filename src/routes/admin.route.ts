@@ -1,11 +1,15 @@
 import { Router } from "express"
 import createAlliance from "../controllers/Admin/Alliance/createAlliance.controller"
+import adminLogout from "../controllers/Admin/logout"
 import trading from "../controllers/Admin/Trading/trading.controller"
+import gameActive from "../Middleware/gameActive"
 
 const adminRouter = Router()
 
-adminRouter.post("/createAlliance", createAlliance)
+adminRouter.get("/logout", adminLogout)
 
-adminRouter.post("/trade", trading)
+adminRouter.post("/alliance", gameActive, createAlliance)
+
+adminRouter.post("/trade", gameActive, trading)
 
 export default adminRouter

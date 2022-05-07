@@ -1,11 +1,20 @@
 import Team from "../../../models/team.model"
-import { controller, errorFormatter } from "../../common"
+import { controller, errorFormatter, toBool } from "../../common"
 import GenPayload from "../../GenPayload"
 
 const MAX_DEFENSE_POINTS = 1_000
 const DEFENSE_POINT_COST = 2_500
 
 const buyDefensePoints: controller = async (req, res) => {
+  if (
+    !toBool(process.env.ROUND1_ACTIVE) &&
+    !toBool(process.env.ROUND2_ACTIVE) &&
+    !toBool(process.env.ROUND3_ACTIVE)
+  )
+    return res
+      .status(400)
+      .send({ message: "Buying Defense Points Not Available yet." })
+
   const numOfPoints = parseInt(req.body.numOfPoints)
   if (numOfPoints > MAX_DEFENSE_POINTS)
     return res

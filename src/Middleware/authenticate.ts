@@ -3,7 +3,7 @@ import { controller } from "../controllers/common"
 
 const authenticate: controller = async (req, res, next) => {
   const token = req.cookies["wartrade"]
-  console.log(token, req.cookies)
+
   if (!token) return res.clearCookie("wartrade").sendStatus(400)
 
   const verifiedToken = jwt.verify(token, process.env.JWT_SECRET) as {

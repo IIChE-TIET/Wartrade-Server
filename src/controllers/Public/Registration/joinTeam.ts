@@ -1,10 +1,13 @@
 import teamJoinMail from "../../../Mail/teamJoin.mail"
 import Team, { member, teamI } from "../../../models/team.model"
-import { controller, errorFormatter } from "../../common"
+import { controller, errorFormatter, toBool } from "../../common"
 
 type body = { member: member; code: teamI["code"] }
 
 export const teamExistsandHasSpace: controller = async (req, res, next) => {
+  if (!toBool(process.env.JOIN_TEAM_ALLOWED))
+    return res.status(400).send({ message: "Registrations Have Stopped." })
+
   const { code }: body = req.body
   try {
     const exists = await Team.findOne({ code })

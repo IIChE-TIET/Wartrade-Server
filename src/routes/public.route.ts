@@ -1,6 +1,6 @@
 import { Router } from "express"
-import createAlliance from "../controllers/Admin/Alliance/createAlliance.controller"
-import trading from "../controllers/Admin/Trading/trading.controller"
+import AdminLogin from "../controllers/Admin/login"
+import AdminSignup from "../controllers/Admin/signup"
 import getTeams from "../controllers/getTeams"
 import changePassword from "../controllers/Public/ForgotPassword/changePassword"
 import generateToken from "../controllers/Public/ForgotPassword/generateToken"
@@ -28,9 +28,9 @@ publicRouter.post("/forgotPassword/verifyToken/:teamName/:token", verifyToken)
 
 publicRouter.post("/forgotPassword/change", changePassword)
 
-publicRouter.post("/alliance", createAlliance)
+publicRouter.post("/adminLogin", AdminLogin)
 
-publicRouter.post("/trading", trading)
+publicRouter.post("/adminSignup", AdminSignup)
 
 // publicRouter.get("/update", async (req: Request, res: Response) => {
 //   try {

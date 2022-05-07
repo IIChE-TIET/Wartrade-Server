@@ -1,9 +1,14 @@
 import Team from "../../../models/team.model"
-import { controller, errorFormatter } from "../../common"
+import { controller, errorFormatter, toBool } from "../../common"
 import GenPayload from "../../GenPayload"
 import { findBombByName } from "./BombsList"
 
 const buyBombs: controller = async (req, res) => {
+  if (!toBool(process.env.ROUND1_ACTIVE) && !toBool(process.env.ROUND3_ACTIVE))
+    return res
+      .status(400)
+      .send({ message: "Buying Bombs Not Available in this round" })
+
   const { bombName, quantity } = req.body as {
     bombName: string
     quantity: number

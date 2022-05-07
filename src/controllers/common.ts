@@ -23,3 +23,5 @@ export const errorFormatter = (e: any) => {
 
   return errors
 }
+
+export const toBool = (str: string) => str === "true"

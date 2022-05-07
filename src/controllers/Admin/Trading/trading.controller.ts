@@ -1,6 +1,6 @@
 import { Response } from "express"
 import Team, { teamI } from "../../../models/team.model"
-import { controller, errorFormatter } from "../../common"
+import { controller, errorFormatter, toBool } from "../../common"
 import { bomb, findBombByName } from "../../Private/BuyBombs/BombsList"
 
 const checkBombExistsAndQuantity = (
@@ -96,6 +96,11 @@ const updatedBombsAfterBuying = (
 }
 
 const trading: controller = async (req, res) => {
+  if (!toBool(process.env.ROUND2_ACTIVE))
+    return res
+      .status(400)
+      .send({ message: "Trading Not Available in this round" })
+
   const { countrySellingName, countryBuyingName, bombName } = req.body
   const quantity = parseInt(req.body.quantity)
   const money = parseInt(req.body.money)

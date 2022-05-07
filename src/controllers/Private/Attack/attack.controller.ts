@@ -1,5 +1,5 @@
 import Team, { teamI } from "../../../models/team.model"
-import { controller, errorFormatter } from "../../common"
+import { controller, errorFormatter, toBool } from "../../common"
 import { findBombByName } from "../BuyBombs/BombsList"
 import GenPayload from "./../../GenPayload"
 
@@ -9,7 +9,7 @@ const DEFENSE_POWER = 10_000
 
 const BASE_DEFENSE = 1_000_000
 
-const BASE_BOUNTY = 750_000
+const BASE_BOUNTY = (defensePoints: number) => defensePoints * 18000
 
 const BOUNTY_PERCENTAGE = 15
 
@@ -28,6 +28,11 @@ const inAliiance = (defendingTeam: teamI, attackingTeam: teamI) =>
     .teamName === attackingTeam.teamName
 
 const Attack: controller = async (req, res) => {
+  if (!toBool(process.env.ROUND2_ACTIVE) && !toBool(process.env.ROUND3_ACTIVE))
+    return res
+      .status(400)
+      .send({ message: "Attacking Not Available in this round" })
+
   const { teamName, choosenBombs } = req.body as {
     teamName: string
     choosenBombs: { bombName: string; quantity: number }[]
@@ -61,6 +66,9 @@ const Attack: controller = async (req, res) => {
         bomb.value * current.quantity * (bomb.unit === "Mt" ? 1_000_000 : 1_000)
       )
     }, 0)
+
+    const totalDefensePoints =
+      defendingTeam.defensePoints + defendingTeam.sharedDefensePoints
 
     const defenseStrength =
       (defendingTeam.defensePoints + defendingTeam.sharedDefensePoints) *
@@ -97,7 +105,7 @@ const Attack: controller = async (req, res) => {
 
       await attackingTeam.updateOne({
         $inc: {
-          money: bounty + BASE_BOUNTY,
+          money: bounty + BASE_BOUNTY(totalDefensePoints),
           infra: infraGain,
         },
         $set: {
@@ -110,7 +118,7 @@ const Attack: controller = async (req, res) => {
               "Attacked successfully on " +
               teamName +
               " and gained $" +
-              (bounty + BASE_BOUNTY) +
+              (bounty + BASE_BOUNTY(totalDefensePoints)) +
               " and " +
               infraGain +
               " Infrastructure",
@@ -118,7 +126,7 @@ const Attack: controller = async (req, res) => {
         },
       })
 
-      attackingTeam.money += bounty + BASE_BOUNTY
+      attackingTeam.money += bounty + BASE_BOUNTY(totalDefensePoints)
       attackingTeam.infra += infraGain
       attackingTeam.bombs = newBombsList
 

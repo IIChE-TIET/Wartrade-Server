@@ -1,9 +1,12 @@
 import { nanoid } from "nanoid"
 import createTeamMail from "../../../Mail/createTeam.mail"
 import Team, { teamI } from "../../../models/team.model"
-import { controller, errorFormatter } from "../../common"
+import { controller, errorFormatter, toBool } from "../../common"
 
 const createTeam: controller = async (req, res) => {
+  if (!toBool(process.env.CREATE_NEW_TEAM_ALLOWED))
+    return res.status(400).send({ message: "Registrations Have Stopped." })
+
   const { teamName, leader, password } = req.body as teamI
 
   try {
