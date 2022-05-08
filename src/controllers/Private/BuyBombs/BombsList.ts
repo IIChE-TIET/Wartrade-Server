@@ -73,7 +73,7 @@ const platinumPool: bombPool = {
     price: 95000,
     element: ["plutonium 244", "lithium 7"],
   },
-  "Firecracker ": {
+  Firecracker: {
     value: 0.7,
     unit: "Mt",
     price: 70000,
