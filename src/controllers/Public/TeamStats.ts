@@ -6,7 +6,7 @@ const teamStats: controller = async (req, res) => {
     const teams = await Team.find({ allowed: true }).lean()
 
     const payload = teams.map(team => ({
-      countryName: team.teamName,
+      countryName: team.countryName,
       infra: Math.floor(team.infra),
       defense: Math.floor(team.defensePoints),
       money: Math.floor(team.money),
