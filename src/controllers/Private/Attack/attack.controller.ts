@@ -9,7 +9,7 @@ const DEFENSE_POWER = 10_000
 
 const BASE_DEFENSE = 1_000_000
 
-const BASE_BOUNTY = (defensePoints: number) => defensePoints * 18000
+const BASE_BOUNTY = (defensePoints: number) => defensePoints * 1700
 
 const BOUNTY_PERCENTAGE = 15
 
@@ -38,17 +38,23 @@ const Attack: controller = async (req, res) => {
     choosenBombs: { bombName: string; quantity: number }[]
   }
 
+  console.log({ choosenBombs })
+
   if (!teamName || !choosenBombs)
     return res.status(400).send({ message: "Incomplete Information" })
+
+  if (choosenBombs.length <= 0)
+    return res.status(400).send({ message: "Please Select Bombs" })
 
   const id = req.teamId
 
   try {
-    const defendingTeam = await Team.findOne({ teamName })
+    const defendingTeam = await Team.findOne({ countryName: teamName })
     if (inCooldown(defendingTeam.lastAttack))
       return res.status(406).send({
-        message:
-          "The country is under cooldown, and can't be attacked right now",
+        message: `You were too slow. The country is under cooldown, and can't be attacked right now for ${
+          (Date.now() - defendingTeam.lastAttack.getTime()) / 1000
+        }sec `,
       })
 
     const attackingTeam = await Team.findById(id)
@@ -103,7 +109,7 @@ const Attack: controller = async (req, res) => {
           200
         )
       if (totalDefensePoints + lostDefense < 0)
-        lostDefense = defendingTeam.defensePoints
+        lostDefense = -1 * defendingTeam.defensePoints
 
       await attackingTeam.updateOne({
         $inc: {
@@ -246,7 +252,7 @@ const Attack: controller = async (req, res) => {
         },
       })
       return res
-        .status(200)
+        .status(406)
         .send({ message: "Attack Lost", profile: GenPayload(attackingTeam) })
     }
   } catch (err) {

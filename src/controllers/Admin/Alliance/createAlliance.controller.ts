@@ -8,7 +8,7 @@ const check_if_already_in_alliance = async (
   teamName: string,
   res: Response
 ) => {
-  const team = await Team.findOne({ teamName: teamName })
+  const team = await Team.findOne({ countryName: teamName })
   if (team.inAlliance) {
     res.status(400).send({
       message:

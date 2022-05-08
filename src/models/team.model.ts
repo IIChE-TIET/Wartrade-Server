@@ -12,6 +12,7 @@ export type member = {
 
 export type teamI = Document & {
   teamName: string
+  countryName?: string
   password: string
   code: string
   leader: member
@@ -23,7 +24,9 @@ export type teamI = Document & {
     bombName: string
     quantity: number
   }[][]
+  banned?: string
   defensePoints?: number
+  defensePointCost?: number
   inAlliance?: boolean
   sharedDefensePoints?: number
   allianceHistory?: { teamName: string }[]
@@ -36,6 +39,10 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
     teamName: {
       type: String,
       required: [true, "Team Name is required"],
+    },
+    countryName: {
+      type: String,
+      required: false,
     },
     password: {
       type: String,
@@ -69,6 +76,14 @@ const TeamSchema = new mongoose.Schema<teamI & Document>(
     defensePoints: {
       type: Number,
       default: 0,
+    },
+    defensePointCost: {
+      type: Number,
+      default: 2500,
+    },
+    banned: {
+      type: String,
+      required: false,
     },
     sharedDefensePoints: {
       type: Number,

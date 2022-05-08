@@ -116,9 +116,11 @@ const trading: controller = async (req, res) => {
   const bomb = findBombByName(bombName)
 
   try {
-    const countrySelling = await Team.findOne({ teamName: countrySellingName })
+    const countrySelling = await Team.findOne({
+      countryName: countrySellingName,
+    })
     if (!checkBombExistsAndQuantity(countrySelling, bomb, quantity, res)) return
-    const countryBuying = await Team.findOne({ teamName: countryBuyingName })
+    const countryBuying = await Team.findOne({ countryName: countryBuyingName })
     if (!checkMoneyAndPoolLimit(countryBuying, bomb, quantity, money, res))
       return
 

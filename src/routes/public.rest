@@ -1,5 +1,13 @@
 GET http://localhost:5000
 
+###
+
+GET http://localhost:5000/view
+
+###
+
+GET http://localhost:5000/crisis
+
 ###Create Team
 
 POST http://localhost:5000/create
