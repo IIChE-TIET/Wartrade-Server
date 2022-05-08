@@ -101,7 +101,10 @@ const trading: controller = async (req, res) => {
       .status(400)
       .send({ message: "Trading Not Available in this round" })
 
-  const { countrySellingName, countryBuyingName, bombName } = req.body
+  let { countrySellingName, countryBuyingName, bombName } = req.body
+
+  countrySellingName = countrySellingName.toUpperCase()
+  countryBuyingName = countryBuyingName.toUpperCase()
   const quantity = parseInt(req.body.quantity)
   const money = parseInt(req.body.money)
 

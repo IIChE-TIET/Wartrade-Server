@@ -3,10 +3,12 @@ import { controller, errorFormatter } from "../../common"
 import CountryList from "./CountryList"
 
 const assignCountry: controller = async (req, res) => {
-  const { teamName, countryName } = req.body as {
+  let { teamName, countryName } = req.body as {
     teamName: string
     countryName: string
   }
+
+  countryName = countryName.toUpperCase()
 
   if (!teamName || !countryName)
     return res.status(400).send({ message: "Incomplete Parameters" })

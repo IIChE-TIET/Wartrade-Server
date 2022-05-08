@@ -38,8 +38,4 @@ const CountryList: {
   FINLAND: "PLUTONIUM 244",
 }
 
-const team = "USA"
-
-CountryList[team]
-
 export default CountryList

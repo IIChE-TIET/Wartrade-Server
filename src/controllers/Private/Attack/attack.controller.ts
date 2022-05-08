@@ -33,10 +33,12 @@ const Attack: controller = async (req, res) => {
       .status(400)
       .send({ message: "Attacking Not Available in this round" })
 
-  const { teamName, choosenBombs } = req.body as {
+  let { teamName, choosenBombs } = req.body as {
     teamName: string
     choosenBombs: { bombName: string; quantity: number }[]
   }
+
+  teamName = teamName.toUpperCase()
 
   console.log({ choosenBombs })
 

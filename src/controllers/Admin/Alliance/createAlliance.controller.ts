@@ -32,7 +32,9 @@ const createAlliance: controller = async (req, res) => {
       .status(400)
       .send({ message: "Buying Defense Points Not Available yet." })
 
-  const { teamName1, teamName2 } = req.body
+  let { teamName1, teamName2 } = req.body
+  teamName1 = teamName1.toUpperCase()
+  teamName2 = teamName2.toUpperCase()
 
   if (!teamName1 || !teamName2)
     return res.status(400).send({ message: "Specify the Team Names!" })
